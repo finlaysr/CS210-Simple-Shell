@@ -37,8 +37,8 @@ BIN_DIR := bin
 TARGET := shell
 
 # List of files to include in build
-FILES := $(wildcard $(SRC_DIR)/*.c)
-OBJS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o, $(FILES))
+SRCS := $(wildcard $(SRC_DIR)/*.c)
+OBJS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o, $(SRCS))
 DEPS := $(OBJS:.o=.d)
 # Ensure these targets are not mistaken as files to make
 .PHONY: all run clean format
