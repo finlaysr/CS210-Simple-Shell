@@ -24,14 +24,13 @@ jobs:
           with:
             run-id: ${{ github.event.workflow_run.id }}
             github-token: ${{ secrets.GITHUB_TOKEN }}
-            path: .
 
         - name: Create Release
           uses: softprops/action-gh-release@v2
           with:
             files: |
-                shell_v${{ github.event.workflow_run.run_number }}
-                shell_v${{ github.event.workflow_run.run_number }}-release
+                shell_v${{ github.event.workflow_run.run_number }}/shell_v${{ github.event.workflow_run.run_number }}
+                shell_v${{ github.event.workflow_run.run_number }}-release/shell_v${{ github.event.workflow_run.run_number }}-release
             body: |
                 Automated release generated after successful build.
                 Changes: ${{ github.event.workflow_run.head_commit.message }}
