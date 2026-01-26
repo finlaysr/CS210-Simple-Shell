@@ -20,14 +20,17 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@master
         with:
           repository: ${{ github.repository }}
+          excludes: prerelease, draft
 
       - name: Increment version
         id: increment-version
         run: |
           CURRENT="${{ steps.current-version.outputs.version }}"
-          NEXT-VERSION="v$(( ${CURRENT:1} + 1 ))"
-          echo "next-version=$NEXT-VERSION" >> $GITHUB_OUTPUT
-          echo "$NEXT-VERSION" > version.txt
+          echo "Current version: $CURRENT"
+          NEXT_VERSION="v$(( ${CURRENT:1} + 1 ))"
+          echo "Next version: $NEXT_VERSION"
+          echo "next-version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          echo "$NEXT_VERSION" > version.txt
 
       - name: Upload version artifact
         uses: actions/upload-artifact@v6
