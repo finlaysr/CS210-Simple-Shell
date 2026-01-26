@@ -34,8 +34,8 @@ jobs:
           uses: softprops/action-gh-release@v2
           with:
             files: |
-                shell_v${{ steps.version.outputs.next_version }}/shell_v${{ steps.version.outputs.next_version }}
-                shell_v${{ steps.version.outputs.next_version }}-release/shell_v${{ steps.version.outputs.next_version }}-release
+                shell_${{ steps.version.outputs.next_version }}/shell_${{ steps.version.outputs.next_version }}
+                shell_${{ steps.version.outputs.next_version }}-release/shell_${{ steps.version.outputs.next_version }}-release
             body: |
                 Automated release generated after successful build.
                 Changes: ${{ github.event.workflow_run.head_commit.message }}

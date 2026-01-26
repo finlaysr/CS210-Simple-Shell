@@ -15,18 +15,18 @@ jobs:
       next-version: ${{ steps.increment-version.outputs.next-version }}
     
     steps:
-      - name: Current version
-        id: current-version
-        uses: pozetroninc/github-action-get-latest-release@master
-        with:
-          repository: ${{ github.repository }}
-          excludes: prerelease, draft
-
       - name: Increment version
         id: increment-version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          CURRENT="${{ steps.current-version.outputs.version }}"
+          CURRENT=$(gh release view --repo ${{ github.repository }} --json tagName --jq .tagName 2>/dev/null || true)
           echo "Current version: $CURRENT"
+
+          if [ -z "$CURRENT" ]; then
+            CURRENT="v0"
+          fi
+
           NEXT_VERSION="v$(( ${CURRENT:1} + 1 ))"
           echo "Next version: $NEXT_VERSION"
           echo "next-version=$NEXT_VERSION" >> $GITHUB_OUTPUT
@@ -50,13 +50,13 @@ jobs:
       run: make
 
     - name: Rename artifact
-      run: mv bin/shell bin/shell_v${{ needs.get-version.outputs.next-version }}
+      run: mv bin/shell bin/shell_${{ needs.get-version.outputs.next-version }}
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v6
       with:
-        name: shell_v${{ needs.get-version.outputs.next-version }}
-        path: bin/shell_v${{ needs.get-version.outputs.next-version }}
+        name: shell_${{ needs.get-version.outputs.next-version }}
+        path: bin/shell_${{ needs.get-version.outputs.next-version }}
 
   build-release:
     runs-on: ubuntu-latest
@@ -70,10 +70,10 @@ jobs:
       run: make release=1
     
     - name: Rename artifact
-      run: mv bin/shell bin/shell_v${{ needs.get-version.outputs.next-version }}-release
+      run: mv bin/shell bin/shell_${{ needs.get-version.outputs.next-version }}-release
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v6
       with:
-        name: shell_v${{ needs.get-version.outputs.next-version }}-release
-        path: bin/shell_v${{ needs.get-version.outputs.next-version }}-release
+        name: shell_${{ needs.get-version.outputs.next-version }}-release
+        path: bin/shell_${{ needs.get-version.outputs.next-version }}-release
