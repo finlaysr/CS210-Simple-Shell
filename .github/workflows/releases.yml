@@ -19,12 +19,9 @@ jobs:
           contents: write
     
         steps:
-        - name: Download build artifact
+        - name: Download build artifacts
           uses: actions/download-artifact@v7
           with:
-            name: |
-                shell-bin-v${{ github.event.workflow_run.run_number }}
-                shell-bin-v${{ github.event.workflow_run.run_number }}-release
             run-id: ${{ github.event.workflow_run.id }}
             github-token: ${{ secrets.GITHUB_TOKEN }}
 

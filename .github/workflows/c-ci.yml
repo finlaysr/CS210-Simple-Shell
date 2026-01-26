@@ -24,7 +24,7 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v6
       with:
-        name: shell-bin-v${{ github.run_number }}
+        name: shell_v${{ github.run_number }}
         path: bin/shell_v${{ github.run_number }}
 
   build-release:
@@ -43,5 +43,5 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v6
       with:
-        name: shell-bin-v${{ github.run_number }}-release
+        name: shell_v${{ github.run_number }}-release
         path: bin/shell_v${{ github.run_number }}-release
