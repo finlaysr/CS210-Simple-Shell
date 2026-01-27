@@ -10,14 +10,19 @@ int run(char *input[]) {
   pid_t p = fork();
 
   if (p > 0) {
+    // Parent proccess
     wait(NULL);
-  } else if (!p) {
-    execvp(input[0], input);
 
+  } else if (!p) {
+    // Child proccess
+    execvp(input[0], input);
+    // If this point reached, an error occured in exec
     perror("Error: ");
     exit(1);
+
   } else {
     printf("Forking failed\n");
   }
+
   return 0;
 }

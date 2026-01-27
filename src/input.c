@@ -6,37 +6,36 @@ const char delimiters[] = " \t\n|><&;";
 
 int get_input(char *output[INPUT_LEN]) {
   printf("--> ");
-  fflush(stdout);
+  fflush(stdout); // Fix for prompt not printing correctly
 
   char input_buffer[INPUT_LEN];
   // WARN: Check if n correct
   char *tmp = fgets(input_buffer, INPUT_LEN - 1, stdin);
+  // Exit if CTR-d pressed
+  if (!tmp) {
+    return 0;
+  }
 
   tokenize(input_buffer, output);
 
-  return (strcmp(output[0], "exit") && tmp);
+  // Exit if exit (and nothing else) inputted
+  return (strcmp(output[0], "exit") || output[1]);
 }
 
 void tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]) {
   char *token = strtok_r(input, delimiters, &input);
 
-  printf("Tokens: [");
   for (int i = 0; token; i++) {
-
     output[i] = token;
     printf("\"%s\"", output[i]);
 
     token = strtok_r(input, delimiters, &input);
-    if (token) {
-      printf(", ");
-    }
   }
-  printf("]\n");
 }
 
-int clear(char *input[INPUT_LEN]) {
-  for (int i = 0; input[i]; i++) {
-    input[i] = NULL;
+int clear(char *array[INPUT_LEN]) {
+  for (int i = 0; array[i]; i++) {
+    array[i] = NULL;
   }
   return 0;
 }
